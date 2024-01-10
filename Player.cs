@@ -12,7 +12,7 @@ namespace TextBasedConsoleGame
         public string Name { get; set; }
         public string WeaponName { get; set; }
         public int WeaponDamage { get; set; }
-        public int HitChance { get; set; }
+        public int HealingPotions { get; set; }
 
         public Player()
         {
@@ -20,10 +20,24 @@ namespace TextBasedConsoleGame
             Name = string.Empty;
             WeaponName = string.Empty;
             WeaponDamage = 0;
-            HitChance = 20;
         }
 
-        void FightSequence()
+        public int PlayerHitChance()
+        {
+            Random random = new Random();
+            var hitChance = random.Next(1, 10);
+            return hitChance;
+        }
+
+        public void ShowHealth()
+        {
+            if (HealthPoints <= 0)
+                Console.WriteLine("You died!");
+            else
+                Console.WriteLine($"You took quite the hit! You now have {HealthPoints} health left.");
+        }
+
+        void DrinkHealingPotion()
         {
 
         }

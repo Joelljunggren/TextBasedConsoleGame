@@ -24,9 +24,17 @@ namespace TextBasedConsoleGame
             return attackChance;
         }
 
+        public void MonsterAttack()
+        {
+            Console.WriteLine($"The {MonsterName} starts it's attack and..");
+            Thread.Sleep(600);
+            HitChance();
+
+        }
+
         public void MonsterArival()
         {
-            string text = $"\nA {MonsterName} stands before you!\n It has {HealthPoints} health points and deals {Damage} damage per hit.\n";
+            string text = $"\nA {MonsterName} stands before you!\nIt has {HealthPoints} health points and deals {Damage} damage per hit.\n";
             Console.WriteLine(text);
         }
     }

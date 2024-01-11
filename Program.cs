@@ -3,7 +3,6 @@
 Player player = new Player();
 Skeleton skeleton = new Skeleton();
 Zombie zombie = new Zombie();
-int roomsCleared = 0;
 int encounterCounter = 0;
 
 
@@ -43,8 +42,8 @@ void MainMenu()
 
 void Room()
 {
-    Room room = new Room();
     Console.Clear();
+    Room room = new Room();
     if(room.Torch == true)
         SlowWriter.Write("The room has a torch, you can clearly see your surroundings in here.\n");
     else
@@ -64,7 +63,6 @@ void Room()
     }
 
     Encounter();
-    //    YouBeatTheGame();
 }
 
 
@@ -124,6 +122,8 @@ void Encounter()
 
     if (encounterCounter == 1)
     {
+        YouBeatTheGame();
+
         skeleton.MonsterArival();
         SneakAttempt();
         SkeletonFight();
@@ -136,7 +136,11 @@ void Encounter()
     }
     if(encounterCounter == 3)
     {
-        
+        YouBeatTheGame();
+    }
+    if (encounterCounter == 4)
+    {
+
     }
 }
 
@@ -154,7 +158,7 @@ void SneakAttempt()
         }
 
         else
-            Console.WriteLine("The skeleton notices you!");
+            Console.WriteLine("The fiend notices you!");
     }
     Console.WriteLine("Attack it is, queue boss music!");
 }
@@ -167,7 +171,7 @@ void ZombieFight()
     {
         if(player.HealthPoints >= 0)
         {
-            PlayerAttack();
+            player.PlayerAttack();
             if(player.PlayerHitChance() <= 4)
             {
                 Console.WriteLine("You missed!\n");
@@ -182,7 +186,7 @@ void ZombieFight()
 
         if (zombie.HealthPoints >= 0)
         {
-            SkeletonAttack();
+            zombie.MonsterAttack();
             if (zombie.HitChance() <= 6)
             {
                 Console.WriteLine("It missed!\n");
@@ -199,9 +203,10 @@ void ZombieFight()
 
     if(zombie.HealthPoints <= 0)
     {
-        roomsCleared++;
-        Console.WriteLine("\nThe skeleton is dead.");
+        Console.WriteLine("\nThe zombie is dead.");
         Console.WriteLine("Press any key to advance into the next room...");
+        player.ShowCurrentPlayerHealth();
+        player.DrinkHealingPotion();
         Console.ReadKey();
         Room();
     }
@@ -225,7 +230,7 @@ void SkeletonFight()
     {
         if (player.HealthPoints >= 0)
         {
-            PlayerAttack();
+            player.PlayerAttack();
             if (player.PlayerHitChance() <= 4)
             {
                 Console.WriteLine("You missed!\n");
@@ -240,7 +245,7 @@ void SkeletonFight()
 
         if (skeleton.HealthPoints >= 0)
         {
-            SkeletonAttack();
+            skeleton.MonsterAttack();
             if (skeleton.HitChance() <= 6)
             {
                 Console.WriteLine("It missed!\n");
@@ -257,9 +262,10 @@ void SkeletonFight()
 
     if (skeleton.HealthPoints <= 0)
     {
-        roomsCleared++;
         Console.WriteLine("\nThe skeleton is dead.");
-        Console.WriteLine("Press any key to advance into the next room...");
+        player.ShowCurrentPlayerHealth();
+        player.DrinkHealingPotion();
+        Console.Write("\nPress any key to advance into the next room...");
         Console.ReadKey();
         Room();
     }
@@ -277,30 +283,18 @@ void SkeletonFight()
 
 void SuccessfullSneak()
 {
-    roomsCleared++;
-    Console.WriteLine("You creap your way to the door without alarming the skeleton.");
+    Console.WriteLine("You creap your way to the door without alarming the creature.");
     Console.WriteLine("You stumble into a new room.\n");
     Console.WriteLine("Press any key to continue forwards.");
     Console.ReadKey();
     Room();
 }
 
-void SkeletonAttack()
-{
-    Console.WriteLine($"The skeleton starts it's attack and..");
-    Thread.Sleep(600);
-    skeleton.HitChance();
-}
-
-void PlayerAttack()
-{
-    Console.WriteLine($"You raise your {player.WeaponName} and..");
-    Thread.Sleep(600);
-    player.PlayerHitChance();
-}
-
 void YouBeatTheGame()
 {
-    Console.WriteLine("\nCongratulations, you escaped!");
+    SlowWriter.Write("\nTurns out that this was the last room, you can see an exit ahead of you!");
+    Console.Write("\nPress any key to return to the main menu.");
+    Console.ReadKey();
+    MainMenu();
 }
 

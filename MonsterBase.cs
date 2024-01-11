@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextBasedConsoleGame
 {
-    internal class MonsterBase
+    public class MonsterBase
     {
         public string MonsterName { get; set; }
         public int HealthPoints { get; set; }
@@ -24,5 +24,10 @@ namespace TextBasedConsoleGame
             return attackChance;
         }
 
+        public void MonsterArival()
+        {
+            string text = $"\nA {MonsterName} stands before you!\n It has {HealthPoints} health points and deals {Damage} damage per hit.\n";
+            Console.WriteLine(text);
+        }
     }
 }

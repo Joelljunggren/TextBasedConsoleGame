@@ -2,7 +2,10 @@
 
 Player player = new Player();
 Skeleton skeleton = new Skeleton();
+Zombie zombie = new Zombie();
 int roomsCleared = 0;
+int encounterCounter = 0;
+
 
 MainMenu();
 
@@ -60,21 +63,11 @@ void Room()
         var doorChoice = Console.ReadLine();
     }
 
-    if (roomsCleared == 0)
-        SkeletonEncounter();
-    if (roomsCleared == 1)
-        WerewolfEncounter();
-    if (roomsCleared == 2)
-        ZombieEncounter();
-    if(roomsCleared == 3)
-        YouBeatTheGame();
+    Encounter();
+    //    YouBeatTheGame();
 }
 
 
-void YouBeatTheGame()
-{
-    Console.WriteLine("\nCongratulations, you escaped!");
-}
 void CreateCharacter()
 {
     Console.Clear();
@@ -125,11 +118,30 @@ void CreateCharacter()
     }
 }
 
-void SkeletonEncounter()
+void Encounter()
 {
-    Console.WriteLine("A skeleton blocks your path!\n");
-    Console.WriteLine($"It has {skeleton.HealthPoints}HP and it deals {skeleton.Damage} damage per hit.\n");
+    encounterCounter++;
 
+    if (encounterCounter == 1)
+    {
+        skeleton.MonsterArival();
+        SneakAttempt();
+        SkeletonFight();
+    }
+    if(encounterCounter == 2)
+    {
+        zombie.MonsterArival();
+        SneakAttempt();
+        ZombieFight();
+    }
+    if(encounterCounter == 3)
+    {
+        
+    }
+}
+
+void SneakAttempt()
+{
     Console.Write("Attack or try to sneak around?: ");
     var choice = Console.ReadLine().ToLower();
     Console.WriteLine();
@@ -145,7 +157,64 @@ void SkeletonEncounter()
             Console.WriteLine("The skeleton notices you!");
     }
     Console.WriteLine("Attack it is, queue boss music!");
-    SkeletonFight();
+}
+
+void ZombieFight()
+{
+    //Måste finnas ett bättre sätt med rng för skeleton och player hitchance
+
+    while (player.HealthPoints >= 0 && zombie.HealthPoints >= 0)
+    {
+        if(player.HealthPoints >= 0)
+        {
+            PlayerAttack();
+            if(player.PlayerHitChance() <= 4)
+            {
+                Console.WriteLine("You missed!\n");
+            }
+            else
+            {
+                zombie.HealthPoints -= player.WeaponDamage;
+                zombie.ShowHealth();
+                Console.WriteLine();
+            }
+        }
+
+        if (zombie.HealthPoints >= 0)
+        {
+            SkeletonAttack();
+            if (zombie.HitChance() <= 6)
+            {
+                Console.WriteLine("It missed!\n");
+            }
+            else
+            {
+                player.HealthPoints -= zombie.Damage;
+                player.ShowHealth();
+                Console.WriteLine();
+            }
+
+        }
+    }
+
+    if(zombie.HealthPoints <= 0)
+    {
+        roomsCleared++;
+        Console.WriteLine("\nThe skeleton is dead.");
+        Console.WriteLine("Press any key to advance into the next room...");
+        Console.ReadKey();
+        Room();
+    }
+
+    if(player.HealthPoints <= 0)
+    {
+        Console.WriteLine("\nSadly, you have perished.");
+        Console.WriteLine("Press any key to return to the main menu.");
+        Console.ReadKey();
+        MainMenu();
+    }
+    
+
 }
 
 void SkeletonFight()
@@ -154,10 +223,10 @@ void SkeletonFight()
 
     while (player.HealthPoints >= 0 && skeleton.HealthPoints >= 0)
     {
-        if(player.HealthPoints >= 0)
+        if (player.HealthPoints >= 0)
         {
             PlayerAttack();
-            if(player.PlayerHitChance() <= 4)
+            if (player.PlayerHitChance() <= 4)
             {
                 Console.WriteLine("You missed!\n");
             }
@@ -186,7 +255,7 @@ void SkeletonFight()
         }
     }
 
-    if(skeleton.HealthPoints <= 0)
+    if (skeleton.HealthPoints <= 0)
     {
         roomsCleared++;
         Console.WriteLine("\nThe skeleton is dead.");
@@ -195,14 +264,14 @@ void SkeletonFight()
         Room();
     }
 
-    if(player.HealthPoints <= 0)
+    if (player.HealthPoints <= 0)
     {
         Console.WriteLine("\nSadly, you have perished.");
         Console.WriteLine("Press any key to return to the main menu.");
         Console.ReadKey();
         MainMenu();
     }
-    
+
 
 }
 
@@ -230,12 +299,8 @@ void PlayerAttack()
     player.PlayerHitChance();
 }
 
-void WerewolfEncounter()
+void YouBeatTheGame()
 {
-    Console.WriteLine("Roar, werewolf");
+    Console.WriteLine("\nCongratulations, you escaped!");
 }
 
-void ZombieEncounter()
-{
-    Console.WriteLine("Gueeh, zombie");
-}

@@ -37,5 +37,14 @@ namespace TextBasedConsoleGame
             string text = $"\nA {MonsterName} stands before you!\nIt has {HealthPoints} health points and deals {Damage} damage per hit.\n";
             Console.WriteLine(text);
         }
+
+        public void ShowHealth()
+        {
+            if (HealthPoints <= 0)
+                Console.WriteLine("You killed it!");
+            else
+                Console.WriteLine($"A fine hit, the {MonsterName} has {HealthPoints} health left!");
+        }
+
     }
 }

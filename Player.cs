@@ -75,10 +75,12 @@ namespace TextBasedConsoleGame
 
         public void DrinkAnotherHealingPotion()
         {
+
             Console.WriteLine("Would you like to drink another one?");
             var choice = Console.ReadLine();
-            if (HealingPotions <= 0)
+            if (choice == "yes" && HealingPotions == 0)
                 Console.WriteLine("\nYou have no healing potions left.");
+
             if (choice == "yes")
             {
                 HealthPoints += 15;

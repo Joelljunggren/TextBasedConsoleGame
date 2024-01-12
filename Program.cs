@@ -3,6 +3,7 @@
 Player player = new Player();
 Skeleton skeleton = new Skeleton();
 Zombie zombie = new Zombie();
+Werewolf werewolf = new Werewolf();
 int encounterCounter = 0;
 
 
@@ -122,8 +123,6 @@ void Encounter()
 
     if (encounterCounter == 1)
     {
-        YouBeatTheGame();
-
         skeleton.MonsterArival();
         SneakAttempt();
         SkeletonFight();
@@ -136,11 +135,13 @@ void Encounter()
     }
     if(encounterCounter == 3)
     {
-        YouBeatTheGame();
+        werewolf.MonsterArival();
+        SneakAttempt();
+        WerewolfFight();
     }
     if (encounterCounter == 4)
     {
-
+        YouBeatTheGame();
     }
 }
 
@@ -204,9 +205,10 @@ void ZombieFight()
     if(zombie.HealthPoints <= 0)
     {
         Console.WriteLine("\nThe zombie is dead.");
-        Console.WriteLine("Press any key to advance into the next room...");
         player.ShowCurrentPlayerHealth();
         player.DrinkHealingPotion();
+
+        Console.WriteLine("Press any key to advance into the next room...");
         Console.ReadKey();
         Room();
     }
@@ -231,7 +233,7 @@ void SkeletonFight()
         if (player.HealthPoints >= 0)
         {
             player.PlayerAttack();
-            if (player.PlayerHitChance() <= 4)
+            if (player.PlayerHitChance() <= 3)
             {
                 Console.WriteLine("You missed!\n");
             }
@@ -266,6 +268,67 @@ void SkeletonFight()
         player.ShowCurrentPlayerHealth();
         player.DrinkHealingPotion();
         Console.Write("\nPress any key to advance into the next room...");
+        Console.ReadKey();
+        Room();
+    }
+
+    if (player.HealthPoints <= 0)
+    {
+        Console.WriteLine("\nSadly, you have perished.");
+        Console.WriteLine("Press any key to return to the main menu.");
+        Console.ReadKey();
+        MainMenu();
+    }
+
+
+}
+
+void WerewolfFight()
+{
+    //Måste finnas ett bättre sätt med rng för skeleton och player hitchance
+
+    while (player.HealthPoints >= 0 && werewolf.HealthPoints >= 0)
+    {
+        if (player.HealthPoints >= 0)
+        {
+            player.PlayerAttack();
+            if (player.PlayerHitChance() <= 4)
+            {
+                Console.WriteLine("You missed!\n");
+            }
+            else
+            {
+                werewolf.HealthPoints -= player.WeaponDamage;
+                werewolf.ShowHealth();
+                Console.WriteLine();
+            }
+        }
+
+        if (werewolf.HealthPoints >= 0)
+        {
+            werewolf.MonsterAttack();
+            if (werewolf.HitChance() <= 6)
+            {
+                Console.WriteLine("It missed!\n");
+            }
+            else
+            {
+                player.HealthPoints -= werewolf.Damage;
+                player.ShowHealth();
+                Console.WriteLine();
+            }
+
+        }
+    }
+
+    if (werewolf.HealthPoints <= 0)
+    {
+        Console.WriteLine("\nThe Werewolf is dead.");
+
+        player.ShowCurrentPlayerHealth();
+        player.DrinkHealingPotion();
+
+        Console.WriteLine("Press any key to advance into the next room...");
         Console.ReadKey();
         Room();
     }

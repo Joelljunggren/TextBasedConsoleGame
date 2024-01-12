@@ -4,7 +4,7 @@ Player player = new Player();
 Skeleton skeleton = new Skeleton();
 Zombie zombie = new Zombie();
 Werewolf werewolf = new Werewolf();
-int encounterCounter = 0;
+int encounterCounter = 1;
 
 
 MainMenu();
@@ -119,30 +119,34 @@ void CreateCharacter()
 
 void Encounter()
 {
-    encounterCounter++;
-
     if (encounterCounter == 1)
     {
+        encounterCounter++;
         skeleton.MonsterArival();
         SneakAttempt();
         SkeletonFight();
     }
-    if(encounterCounter == 2)
+    if (encounterCounter == 2)
     {
+        encounterCounter++;
         zombie.MonsterArival();
         SneakAttempt();
         ZombieFight();
+
     }
-    if(encounterCounter == 3)
+    if (encounterCounter == 3)
     {
+        encounterCounter++;
         werewolf.MonsterArival();
         SneakAttempt();
         WerewolfFight();
     }
     if (encounterCounter == 4)
     {
+        encounterCounter = 1;
         YouBeatTheGame();
     }
+
 }
 
 void SneakAttempt()
@@ -167,6 +171,7 @@ void SneakAttempt()
 void ZombieFight()
 {
     //Måste finnas ett bättre sätt med rng för skeleton och player hitchance
+    Zombie zombie = new Zombie();
 
     while (player.HealthPoints >= 0 && zombie.HealthPoints >= 0)
     {
@@ -226,6 +231,7 @@ void ZombieFight()
 
 void SkeletonFight()
 {
+    Skeleton skeleton = new Skeleton();
     //Måste finnas ett bättre sätt med rng för skeleton och player hitchance
 
     while (player.HealthPoints >= 0 && skeleton.HealthPoints >= 0)
@@ -286,6 +292,7 @@ void SkeletonFight()
 void WerewolfFight()
 {
     //Måste finnas ett bättre sätt med rng för skeleton och player hitchance
+    Werewolf werewolf = new Werewolf();
 
     while (player.HealthPoints >= 0 && werewolf.HealthPoints >= 0)
     {

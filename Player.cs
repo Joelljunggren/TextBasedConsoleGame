@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextBasedConsoleGame
 {
-    internal class Player
+    public class Player
     {
         public int HealthPoints { get; set; }
         public string Name { get; set; }
@@ -30,10 +30,27 @@ namespace TextBasedConsoleGame
             return hitChance;
         }
 
+        public void Attack(MonsterBase monster)
+        {
+            if (HealthPoints <= 0)
+                return;
+
+            PlayerAttack();
+            if(PlayerHitChance() <= 3)
+                Console.WriteLine("You missed.\n");
+
+            else
+            {
+                int damageDealt = WeaponDamage;
+                monster.HealthPoints -= damageDealt;
+                monster.ShowHealth();
+            }
+        }
+
         public void PlayerAttack()
         {
             Console.WriteLine($"You raise your {WeaponName} and..");
-            Thread.Sleep(600);
+            Thread.Sleep(400);
             PlayerHitChance();
         }
 
@@ -54,16 +71,23 @@ namespace TextBasedConsoleGame
         //Borde kunna bryta ut de här till en Healing class
         public void DrinkHealingPotion()
         {
-            Console.WriteLine("\nWould you like to drink a healing potion?");
+            Console.Write("\nWould you like to drink a healing potion?: ");
             var choice = Console.ReadLine();
+
+            while(choice != "yes" && choice != "no")
+            {
+                Console.Write("It's a yes or no question: ");
+                choice = Console.ReadLine().ToLower();
+            }
+
             if (HealingPotions <= 0)
-                Console.WriteLine("You have no healing potions left.");
+                Console.WriteLine("\nYou have no healing potions left.");
             else
             if (choice == "yes")
             {
                 HealthPoints += 15;
                 HealingPotions -= 1;
-                Console.WriteLine($"You heal up to {HealthPoints}");
+                Console.WriteLine($"\nYou heal up to {HealthPoints}");
                 DrinkAnotherHealingPotion();
             }
             else
@@ -75,8 +99,7 @@ namespace TextBasedConsoleGame
 
         public void DrinkAnotherHealingPotion()
         {
-
-            Console.WriteLine("Would you like to drink another one?");
+            Console.Write("\nWould you like to drink another one?: ");
             var choice = Console.ReadLine();
             if (choice == "yes" && HealingPotions == 0)
                 Console.WriteLine("\nYou have no healing potions left.");
@@ -85,14 +108,13 @@ namespace TextBasedConsoleGame
             {
                 HealthPoints += 15;
                 HealingPotions -= 1;
-                Console.WriteLine($"You heal up to {HealthPoints}");
+                Console.WriteLine($"\nYou heal up to {HealthPoints}");
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine("Overconfidence is a slow and insidious killer...");
             }
-
         }
     }
 }

@@ -12,18 +12,8 @@ namespace TextBasedConsoleGame
         public Werewolf()
         {
             MonsterName = "Werewolf";
-            HealthPoints = 55;
+            HealthPoints = 35;
             Damage = 9;
         }
-
-        public void ShowHealth()
-        {
-            if (HealthPoints <= 0)
-                Console.WriteLine("You killed it!");
-            else
-                Console.WriteLine($"A fine hit, the {MonsterName} has {HealthPoints} health left!");
-        }
-
-
     }
 }

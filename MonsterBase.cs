@@ -29,7 +29,26 @@ namespace TextBasedConsoleGame
             Console.WriteLine($"The {MonsterName} starts it's attack and..");
             Thread.Sleep(600);
             HitChance();
+        }
 
+        public void Attack(Player player)
+        {
+            if (player.HealthPoints <= 0)
+                return;
+
+            Console.WriteLine($"\nThe {MonsterName} starts it's attack and..");
+            Thread.Sleep(600);
+
+            if(HitChance() <= 6)
+                Console.WriteLine("It missed!\n");
+
+            else
+            {
+                int damageTaken = Damage;
+                player.HealthPoints -= damageTaken;
+                player.ShowHealth();
+                Console.WriteLine();
+            }
         }
 
         public void MonsterArival()
@@ -41,7 +60,11 @@ namespace TextBasedConsoleGame
         public void ShowHealth()
         {
             if (HealthPoints <= 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("You killed it!");
+                Console.ResetColor();
+            }
             else
                 Console.WriteLine($"A fine hit, the {MonsterName} has {HealthPoints} health left!");
         }

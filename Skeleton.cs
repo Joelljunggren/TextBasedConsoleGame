@@ -11,7 +11,7 @@ namespace TextBasedConsoleGame
         public Skeleton()
         {
             MonsterName = "Skeleton";
-            HealthPoints = 50;
+            HealthPoints = 30;
             Damage = 8;
         }
     }

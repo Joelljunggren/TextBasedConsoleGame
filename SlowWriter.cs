@@ -13,7 +13,7 @@ namespace TextBasedConsoleGame
             foreach (char c in text)
             {
                 Console.Write(c);
-                Thread.Sleep(50);
+                Thread.Sleep(20);
             }
             Console.WriteLine();
         }
